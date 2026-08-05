@@ -20,7 +20,7 @@ export function Sidebar() {
             <div className="mb-8 flex items-center gap-2 px-2">
                 <BookOpen className="h-6 w-6" />
                 <span className="font-serif text-lg font-bold">
-                    Boohshelf
+                    Bookshelf
                 </span>
             </div>
 

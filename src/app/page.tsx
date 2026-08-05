@@ -1,12 +1,21 @@
 'use client';
 
 import { Shelf } from '@/components/Shelf';
+import { BookFormDialog } from '@/components/BookFormDialog';
 import { useBooks } from '@/hooks/useBooks';
 
 export default function HomePage() {
-  const { books, isLoading } = useBooks('all');
+  const { books, isLoading, isError } = useBooks('all');
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Loading...</p>;
+  if (isError) return <p className="text-sm text-destructive">Failed to load books</p>;
 
-  return <Shelf title="All Books" books={books} />;
+  return (
+    <div>
+      <div className="mb-4 flex justify-end">
+        <BookFormDialog mode="create" />
+      </div>
+      <Shelf title="All Books" books={books} />
+    </div>
+  );
 }

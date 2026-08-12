@@ -4,17 +4,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bookmark, BookOpen, CheckCircle2, Library, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useBookCounts } from "@/hooks/useBookCounts";
 
 const navItems = [
-    { label: 'All Books', href: '/', icon: Library, count: 45 },
-    { label: 'Currently Reading', href: '/currently-reading', icon: BookOpen, count: 5 },
-    { label: 'Want to Read', href: '/want-to-read', icon: Bookmark, count: 15 },
-    { label: 'Read', href: '/read', icon: CheckCircle2, count: 20 },
-    { label: 'Favorites', href: '/favorites', icon: Star, count: 5 },
+    { label: 'All Books', href: '/', icon: Library, key: 'all' as const },
+    { label: 'Currently Reading', href: '/currently-reading', icon: BookOpen, key: 'currently-reading' as const },
+    { label: 'Want to Read', href: '/want-to-read', icon: Bookmark, key: 'want-to-read' as const },
+    { label: 'Read', href: '/read', icon: CheckCircle2, key: 'read' as const },
+    { label: 'Favorites', href: '/favorites', icon: Star, key: 'favorites' as const },
 ];
 
 export function Sidebar() {
     const pathname = usePathname();
+    const { counts, isLoading } = useBookCounts();
     return (
         <aside className="flex h-screen w-64 flex-col border-r bg-background p-4">
             <div className="mb-8 flex items-center gap-2 px-2">
@@ -47,7 +49,7 @@ export function Sidebar() {
                                 {item.label}
                             </span>
                             <span className="text-xs text-muted-foreground">
-                                {item.count}
+                                {isLoading ? '...' : counts[item.key]}
                             </span>
                         </Link>
                     );

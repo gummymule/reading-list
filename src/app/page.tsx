@@ -3,6 +3,7 @@
 import { Shelf } from '@/components/Shelf';
 import { BookFormDialog } from '@/components/BookFormDialog';
 import { useBooks } from '@/hooks/useBooks';
+import { SetGoalDialog } from '@/components/SetGoalDialog';
 
 export default function HomePage() {
   const { books, isLoading, isError } = useBooks('all');
@@ -12,7 +13,8 @@ export default function HomePage() {
 
   return (
     <div>
-      <div className="mb-4 flex justify-end">
+      <div className="mb-4 flex justify-end gap-2">
+        <SetGoalDialog />
         <BookFormDialog mode="create" />
       </div>
       <Shelf title="All Books" books={books} />

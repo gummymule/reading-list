@@ -14,6 +14,7 @@ export function useUpdateBook() {
         mutationFn: ({ id, data }: UpdateBookParams) => bookRepository.update(id, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['books'] });
+            queryClient.invalidateQueries({ queryKey: ['reading-goal'] });
         }
     })
 }

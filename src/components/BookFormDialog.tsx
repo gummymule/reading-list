@@ -136,7 +136,7 @@ export function BookFormDialog({ mode, book }: BookFormDialogProps) {
                   <Input
                     {...field}
                     id={`${mode}-title`}
-                    placeholder="Project Hail Mary"
+                    placeholder="Title of the book"
                     aria-invalid={fieldState.invalid}
                     autoComplete="off"
                   />
@@ -154,7 +154,7 @@ export function BookFormDialog({ mode, book }: BookFormDialogProps) {
                   <Input
                     {...field}
                     id={`${mode}-author`}
-                    placeholder="Andy Weir"
+                    placeholder="Author of the book"
                     aria-invalid={fieldState.invalid}
                     autoComplete="off"
                   />
@@ -172,7 +172,7 @@ export function BookFormDialog({ mode, book }: BookFormDialogProps) {
                   <Input
                     {...field}
                     id={`${mode}-genre`}
-                    placeholder="Science Fiction"
+                    placeholder="Genre of the book"
                     aria-invalid={fieldState.invalid}
                     autoComplete="off"
                   />
@@ -217,14 +217,21 @@ export function BookFormDialog({ mode, book }: BookFormDialogProps) {
                       {...field}
                       value={field.value ?? ''}
                       id={`${mode}-progress`}
-                      type="number"
-                      min={0}
-                      max={100}
+                      inputMode="numeric"
                       placeholder="0"
                       aria-invalid={fieldState.invalid}
+                      autoComplete="off"
                       onChange={(e) => {
-                        const rawValue = e.target.value;
-                        field.onChange(rawValue === '' ? undefined : Number(rawValue));
+                        const raw = e.target.value;
+                        const digitsOnly = raw.replace(/\D/g, '');
+
+                        if (digitsOnly === '') {
+                          field.onChange(undefined);
+                          return;
+                        }
+
+                        const num = Math.min(100, Math.max(0, Number(digitsOnly)));
+                        field.onChange(num);
                       }}
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Bookmark, BookOpen, CheckCircle2, Library, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBookCounts } from "@/hooks/useBookCounts";
+import { useReadingGoal } from '@/hooks/useReadingGoal';
 
 const navItems = [
     { label: 'All Books', href: '/', icon: Library, key: 'all' as const },
@@ -17,6 +18,13 @@ const navItems = [
 export function Sidebar() {
     const pathname = usePathname();
     const { counts, isLoading } = useBookCounts();
+    const { goal, isLoading: isLoadingGoal } = useReadingGoal();
+
+    const percent = goal && goal.target > 0 
+        ? Math.min(100, Math.round((goal.current / goal.target) * 100))
+        : 0;
+    const booksToGo = goal ? Math.max(0, goal.target - goal.current) : 0;
+    
     return (
         <aside className="flex h-screen w-64 flex-col border-r bg-background p-4">
             <div className="mb-8 flex items-center gap-2 px-2">
@@ -60,21 +68,32 @@ export function Sidebar() {
                         READING GOALS
                     </p>
                     <div className="px-2">
-                        <div className="flex items-baseline gap-1">
-                            <span className="text-xl font-bold">
-                                15
-                            </span>
-                            <span className="text-sm text-muted-foreground">
-                                / 24 books
-                            </span>
-                            <span className="ml-auto text-sm text-muted-foreground">
-                                2026
-                            </span>
-                        </div>
-                        <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
-                            <div className="h-full w-[63%] rounded-full bg-orange-600" />
-                        </div>
-                        <p className="mt-1.5 text-xs text-muted-foreground">63% complete · 9 books to go</p>
+                        {isLoadingGoal || !goal ? (
+                            <p className="text-xs text-muted-foreground">Loading...</p>
+                        ) : (
+                            <>
+                                <div className="flex items-baseline gap-1">
+                                    <span className="text-xl font-bold">
+                                        {goal.current}
+                                    </span>
+                                    <span className="text-sm text-muted-foreground">
+                                        / {goal.target} books
+                                    </span>
+                                    <span className="ml-auto text-sm text-muted-foreground">
+                                        {goal.year}
+                                    </span>
+                                </div>
+                                <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                                    <div
+                                        className="h-full rounded-full bg-orange-600 transition-all"
+                                        style={{ width: `${percent}%` }}
+                                    />
+                                </div>
+                                <p className="mt-1.5 text-xs text-muted-foreground">
+                                    {percent}% complete · {booksToGo} books to go 
+                                </p>
+                            </>
+                        )}
                     </div>
                 </div>
             </nav>

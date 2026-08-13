@@ -8,6 +8,7 @@ export function useCreateBook() {
         mutationFn: bookRepository.create,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['books'] });
+            queryClient.invalidateQueries({ queryKey: ['reading-goal'] });
         }
     })
 }

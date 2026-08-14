@@ -2,16 +2,25 @@ import type { Book, ReadingStatus } from "@/types/book.types";
 import { apiClient } from "@/lib/api-client";
 
 export const bookRepository = {
-    getAll: (): Promise<Book[]> => {
-        return apiClient.get<Book[]>('/books');
+    getAll: (search? : string): Promise<Book[]> => {
+        return apiClient.get<Book[]>(search 
+            ? `/books?search=${encodeURIComponent(search)}` 
+            : '/books'
+        );
     },
 
-    getByStatus: (status: ReadingStatus): Promise<Book[]> => {
-        return apiClient.get<Book[]>(`/books?status=${status}`);
+    getByStatus: (status: ReadingStatus, search?: string): Promise<Book[]> => {
+        return apiClient.get<Book[]>(search 
+            ? `/books?status=${status}&search=${encodeURIComponent(search)}` 
+            : `/books?status=${status}`
+        );
     },
 
-    getFavorites: (): Promise<Book[]> => {
-        return apiClient.get<Book[]>('/books?favorite=true');
+    getFavorites: (search?: string): Promise<Book[]> => {
+        return apiClient.get<Book[]>(search 
+            ? `/books?favorite=true&search=${encodeURIComponent(search)}` 
+            : '/books?favorite=true'
+        );
     },
 
     create: (data: Omit<Book, 'id' | 'isFavorite' | 'addedAt'>): Promise<Book> => {

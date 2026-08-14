@@ -4,8 +4,8 @@ import { bookRepository } from "@/repositories/book.repositories";
 
 export function useBookCounts() {
     const { data: books = [], isLoading } = useQuery({
-        queryKey: bookQueryKeys.all,
-        queryFn: bookRepository.getAll
+        queryKey: bookQueryKeys.all(),
+        queryFn: () => bookRepository.getAll(),
     });
 
     return {

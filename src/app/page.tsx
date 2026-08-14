@@ -4,8 +4,10 @@ import { Shelf } from '@/components/Shelf';
 import { BookFormDialog } from '@/components/BookFormDialog';
 import { useBooks } from '@/hooks/useBooks';
 import { SetGoalDialog } from '@/components/SetGoalDialog';
+import { BookSearchInput } from '@/components/BookSearchInput';
+import { Suspense } from 'react';
 
-export default function HomePage() {
+function HomePageContent() {
   const { books, isLoading, isError } = useBooks('all');
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Loading...</p>;
@@ -14,10 +16,21 @@ export default function HomePage() {
   return (
     <div>
       <div className="mb-4 flex justify-end gap-2">
-        <SetGoalDialog />
-        <BookFormDialog mode="create" />
+        <BookSearchInput />
+        <div className="flex gap-2">
+          <SetGoalDialog />
+          <BookFormDialog mode="create" />
+        </div>
       </div>
       <Shelf title="All Books" books={books} />
     </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={<p className="text-sm text-muted-foreground">Loading...</p>}>
+      <HomePageContent />
+    </Suspense>
   );
 }

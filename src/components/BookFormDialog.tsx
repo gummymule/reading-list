@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus, Pencil } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -28,6 +29,7 @@ import { bookFormSchema, BookFormValues } from '@/constants/book-form.schema';
 import { useCreateBook } from '@/hooks/useCreateBook';
 import { useUpdateBook } from '@/hooks/useUpdateBook';
 import { Book } from '@/types/book.types';
+import { ApiError } from '@/lib/api-client';
 
 interface BookFormDialogProps {
   mode: 'create' | 'edit';
@@ -85,14 +87,34 @@ export function BookFormDialog({ mode, book }: BookFormDialogProps) {
     if (mode === 'edit' && book) {
       updateBook(
         { id: book.id, data: payload },
-        { onSuccess: () => setOpen(false) }
+        { 
+          onSuccess: (updatedBook) => {
+            setOpen(false)
+            toast.success('Book updated', {
+              description: `"${updatedBook.title}" has been updated`
+            });
+          },
+          onError: (error) => {
+            toast.error('Failed to update book', {
+              description: error instanceof ApiError ? error.message : 'Something went wrong'
+            });
+          }
+        },
       );
     } else {
       createBook(payload, {
-        onSuccess: () => {
+        onSuccess: (newBook) => {
           form.reset();
           setOpen(false);
+          toast.success('Book added', {
+            description: `"${newBook.title}" has been added to your library`
+          });
         },
+        onError: (error) => {
+          toast.error('Failed to add book', {
+            description: error instanceof ApiError ? error.message : 'Something went wrong'
+          })
+        }
       });
     }
   };

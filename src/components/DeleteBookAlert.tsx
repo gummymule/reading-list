@@ -16,6 +16,7 @@ import {
 
 import { useDeleteBook } from '../hooks/useDeleteBook';
 import { Book } from '../types/book.types';
+import { toast } from 'sonner';
 
 interface DeleteBookAlertProps {
   book: Book;
@@ -56,7 +57,16 @@ export function DeleteBookAlert({ book }: DeleteBookAlertProps) {
               <Button
                 variant="destructive"
                 disabled={isPending}
-                onClick={() => deleteBook(book.id)}
+                onClick={() => deleteBook(book.id, {
+                  onSuccess: () => {
+                    toast.success('Book deleted', {
+                      description: `"${book.title}" has been remove from yoour library`
+                    });
+                  },
+                  onError: () => {
+                    toast.error('Failed to delete book');
+                  }
+                })}
               >
                 {isPending ? 'Deleting...' : 'Delete'}
               </Button>

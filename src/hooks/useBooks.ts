@@ -5,18 +5,18 @@ import { bookQueryKeys } from "@/constants/query-keys.constant";
 
 type BookFilter = ReadingStatus | 'favorites' | 'all';
 
-export function useBooks(filter: BookFilter = 'all') {
+export function useBooks(filter: BookFilter = 'all', search?: string) {
     const query = useQuery({
-        queryKey: 
+        queryKey:
             filter === 'all'
-                ? bookQueryKeys.all
+                ? bookQueryKeys.all(search)
                 : filter === 'favorites'
-                    ? bookQueryKeys.favorites()
-                    : bookQueryKeys.byStatus(filter),
+                    ? bookQueryKeys.favorites(search)
+                    : bookQueryKeys.byStatus(filter, search),
         queryFn: () => {
-            if (filter === 'all') return bookRepository.getAll();
-            if (filter === 'favorites') return bookRepository.getFavorites();
-            return bookRepository.getByStatus(filter);
+            if (filter === 'all') return bookRepository.getAll(search);
+            if (filter === 'favorites') return bookRepository.getFavorites(search);
+            return bookRepository.getByStatus(filter, search);
         }
     })
     return { 

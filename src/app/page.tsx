@@ -6,9 +6,13 @@ import { useBooks } from '@/hooks/useBooks';
 import { SetGoalDialog } from '@/components/SetGoalDialog';
 import { BookSearchInput } from '@/components/BookSearchInput';
 import { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 function HomePageContent() {
-  const { books, isLoading, isError } = useBooks('all');
+  const searchParams = useSearchParams();
+  const search = searchParams.get('search') ?? undefined;
+
+  const { books, isLoading, isError } = useBooks('all', search);
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Loading...</p>;
   if (isError) return <p className="text-sm text-destructive">Failed to load books</p>;

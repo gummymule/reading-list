@@ -1,17 +1,27 @@
 import type { Book } from "@/types/book.types";
 import { BookCard } from "./BookCard";
+import { EmptyState } from "./EmptyState";
 
 interface BookGridProps {
     books: Book[];
     emptyMessage?: string;
+    hasActiveSearch?: boolean;
 }
 
-export function BookGrid({ books, emptyMessage = 'No books found.'}: BookGridProps) {
+export function BookGrid({ books, emptyMessage, hasActiveSearch }: BookGridProps) {
     if (books.length === 0) {
-        return (
-            <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
-                {emptyMessage}
-            </div>
+        return hasActiveSearch ? (
+            <EmptyState 
+                variant="no-results"
+                title="No matching books"
+                description="Try a different search term or clear your filters"
+            />
+        ) : (
+            <EmptyState 
+                variant="no-data"
+                title="No books here yet"
+                description={emptyMessage ?? 'Books you add will appear here.'}
+            />
         );
     }
 

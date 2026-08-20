@@ -2,26 +2,14 @@ import type { Book, ReadingStatus } from "@/types/book.types";
 import { apiClient } from "@/lib/api-client";
 
 export const bookRepository = {
-    getAll: (search? : string): Promise<Book[]> => {
-        return apiClient.get<Book[]>(search 
-            ? `/books?search=${encodeURIComponent(search)}` 
-            : '/books'
-        );
-    },
+    getAll: (search?: string, sort?: string): Promise<Book[]> =>
+        apiClient.get<Book[]>(`/books${buildQuery({ search, sort })}`),
 
-    getByStatus: (status: ReadingStatus, search?: string): Promise<Book[]> => {
-        return apiClient.get<Book[]>(search 
-            ? `/books?status=${status}&search=${encodeURIComponent(search)}` 
-            : `/books?status=${status}`
-        );
-    },
+    getByStatus: (status: ReadingStatus, search?: string, sort?: string): Promise<Book[]> =>
+        apiClient.get<Book[]>(`/books${buildQuery({ status, search, sort })}`),
 
-    getFavorites: (search?: string): Promise<Book[]> => {
-        return apiClient.get<Book[]>(search 
-            ? `/books?favorite=true&search=${encodeURIComponent(search)}` 
-            : '/books?favorite=true'
-        );
-    },
+    getFavorites: (search?: string, sort?: string): Promise<Book[]> =>
+        apiClient.get<Book[]>(`/books${buildQuery({ favorite: 'true', search, sort })}`),
 
     create: (data: Omit<Book, 'id' | 'isFavorite' | 'addedAt'>): Promise<Book> => {
         return apiClient.post<Book>('/books', data);
@@ -39,3 +27,12 @@ export const bookRepository = {
         return apiClient.delete<void>(`/books/${id}`);
     }
 };
+
+function buildQuery(params: Record<string, string | undefined>): string {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+        if (value) searchParams.set(key, value);
+    })
+    const query = searchParams.toString();
+    return query ? `?${query}` : '';
+}

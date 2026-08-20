@@ -5,9 +5,10 @@ interface ShelfProps {
     title: string;
     books: Book[];
     emptyMessage?: string;
+    hasActiveSearch?: boolean;
 }
 
-export function Shelf({ title, books, emptyMessage }: ShelfProps) {
+export function Shelf({ title, books, emptyMessage, hasActiveSearch }: ShelfProps) {
     return (
         <section>
             <div className="mb-6 flex items-baseline gap-3">
@@ -18,7 +19,11 @@ export function Shelf({ title, books, emptyMessage }: ShelfProps) {
                     {books.length} books
                 </span>
             </div>
-            <BookGrid books={books} emptyMessage={emptyMessage} />
+            <BookGrid 
+                books={books} 
+                emptyMessage={emptyMessage} 
+                hasActiveSearch={hasActiveSearch}
+            />
         </section>
     )
 }

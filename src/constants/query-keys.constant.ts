@@ -10,3 +10,7 @@ export const bookQueryKeys = {
 export const goalQueryKeys = {
     byYear: (year?: number) => ['reading-goal', year ?? 'current'] as const
 }
+
+export const authQueryKeys = {
+    profile: ['auth', 'profile'] as const
+}

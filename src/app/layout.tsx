@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/layout/Sidebar';
 import './globals.css';
 import { QueryProvider } from '@/components/providers/QueryProvider';
 import { Toaster } from 'sonner';
+import { AuthProvider } from '@/hooks/useAuth';
 
 export const metadata: Metadata = {
   title: 'Bookshelf',
@@ -14,9 +15,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="flex">
         <QueryProvider>
-          <Sidebar />
-          <div className="flex-1 overflow-y-auto p-8">{children}</div>
-          <Toaster />
+          <AuthProvider>
+            <Sidebar />
+            <div className="flex-1 overflow-y-auto p-8">{children}</div>
+            <Toaster />
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

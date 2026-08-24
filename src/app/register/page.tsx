@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { ApiError } from "@/lib/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BookOpen } from "lucide-react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Link from "next/link";

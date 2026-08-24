@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bookmark, BookOpen, CheckCircle2, Library, Star } from "lucide-react";
+import { Bookmark, BookOpen, CheckCircle2, Library, LogOut, Star, UserIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBookCounts } from "@/hooks/useBookCounts";
 import { useReadingGoal } from '@/hooks/useReadingGoal';
+import { Button } from "../ui/button";
+import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
     { label: 'All Books', href: '/', icon: Library, key: 'all' as const },
@@ -19,6 +21,7 @@ export function Sidebar() {
     const pathname = usePathname();
     const { counts, isLoading } = useBookCounts();
     const { goal, isLoading: isLoadingGoal } = useReadingGoal();
+    const { user, logout } = useAuth();
 
     const percent = goal && goal.target > 0 
         ? Math.min(100, Math.round((goal.current / goal.target) * 100))
@@ -97,6 +100,15 @@ export function Sidebar() {
                     </div>
                 </div>
             </nav>
+            <div className="mt-4 flex items-center justify-between border-t pt-4">
+                <Link href="/profile" className="flex items-center gap-2 text-sm hover:underline">
+                    <UserIcon className="h-4 w-4" />
+                    {user?.name}
+                </Link>
+                <Button variant="ghost" size="icon-sm" onClick={() => logout()} aria-label="Log out">
+                    <LogOut className="h-4 w-4" />
+                </Button>
+            </div>
         </aside>
     )
 }

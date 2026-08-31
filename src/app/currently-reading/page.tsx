@@ -7,6 +7,7 @@ import { BookSearchInput } from '@/components/BookSearchInput';
 import { BookSortSelect } from '@/components/BookSortSelect';
 import { useBooks } from '@/hooks/useBooks';
 import { BookGridSkeleton } from '@/components/BookGridSkeleton';
+import { UserMenu } from '@/components/UserMenu';
 
 function CurrentlyReadingContent() {
   const searchParams = useSearchParams();
@@ -20,6 +21,9 @@ function CurrentlyReadingContent() {
       <div className="mb-4 flex justify-end gap-2">
         <BookSearchInput />
         <BookSortSelect />
+        <div className="ml-2">
+          <UserMenu />
+        </div>
       </div>
       
       {isLoading ? (

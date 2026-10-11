@@ -3,13 +3,13 @@ import { apiClient } from "@/lib/api-client";
 
 export const bookRepository = {
     getAll: (search?: string, sort?: string): Promise<Book[]> =>
-        apiClient.get<Book[]>(`/books${buildQuery({ search, sort })}`),
+        apiClient.query<Book[]>(`/books`, { search, sort }),
 
     getByStatus: (status: ReadingStatus, search?: string, sort?: string): Promise<Book[]> =>
-        apiClient.get<Book[]>(`/books${buildQuery({ status, search, sort })}`),
+        apiClient.query<Book[]>(`/books`, { status, search, sort }),
 
     getFavorites: (search?: string, sort?: string): Promise<Book[]> =>
-        apiClient.get<Book[]>(`/books${buildQuery({ favorite: 'true', search, sort })}`),
+        apiClient.query<Book[]>(`/books`, { favorite: true, search, sort }),
 
     create: (data: Omit<Book, 'id' | 'isFavorite' | 'addedAt'>): Promise<Book> => {
         return apiClient.post<Book>('/books', data);
@@ -27,12 +27,3 @@ export const bookRepository = {
         return apiClient.delete<void>(`/books/${id}`);
     }
 };
-
-function buildQuery(params: Record<string, string | undefined>): string {
-    const searchParams = new URLSearchParams();
-    Object.entries(params).forEach(([key, value]) => {
-        if (value) searchParams.set(key, value);
-    })
-    const query = searchParams.toString();
-    return query ? `?${query}` : '';
-}

@@ -90,6 +90,15 @@ export default function LoginPage() {
               )}
             />
 
+            <div className="-mt-3 text-right">
+              <Link
+                href="/forgot-password"
+                className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
             {serverError && (
               <p className="text-sm font-medium text-destructive">{serverError}</p>
             )}

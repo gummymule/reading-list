@@ -8,8 +8,8 @@ import { Toaster } from 'sonner';
 import { AuthProvider } from '@/hooks/useAuth';
 import { RequireAuth } from '@/components/auth/RequireAuth';
 import { usePathname } from 'next/navigation';
+import { PUBLIC_PATHS } from '@/constants/public-paths.constant';
 
-const PUBLIC_PATHS = ['/login', '/register'];
 
 // export const metadata: Metadata = {
 //   title: 'Bookshelf',

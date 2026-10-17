@@ -3,8 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
-
-const PUBLIC_PATHS = ['/login', '/register'];
+import { PUBLIC_PATHS } from '@/constants/public-paths.constant';
 
 export function RequireAuth({ children }: { children: React.ReactNode }) {
     const { user, isLoading } = useAuth();

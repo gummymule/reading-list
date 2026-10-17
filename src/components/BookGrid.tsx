@@ -5,10 +5,11 @@ import { EmptyState } from "./EmptyState";
 interface BookGridProps {
     books: Book[];
     emptyMessage?: string;
+    emptyAction?: React.ReactNode;
     hasActiveSearch?: boolean;
 }
 
-export function BookGrid({ books, emptyMessage, hasActiveSearch }: BookGridProps) {
+export function BookGrid({ books, emptyMessage, emptyAction, hasActiveSearch }: BookGridProps) {
     if (books.length === 0) {
         return hasActiveSearch ? (
             <EmptyState 
@@ -21,6 +22,7 @@ export function BookGrid({ books, emptyMessage, hasActiveSearch }: BookGridProps
                 variant="no-data"
                 title="No books here yet"
                 description={emptyMessage ?? 'Books you add will appear here.'}
+                action={emptyAction}
             />
         );
     }

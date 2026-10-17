@@ -5,10 +5,11 @@ interface ShelfProps {
     title: string;
     books: Book[];
     emptyMessage?: string;
+    emptyAction?: React.ReactNode;
     hasActiveSearch?: boolean;
 }
 
-export function Shelf({ title, books, emptyMessage, hasActiveSearch }: ShelfProps) {
+export function Shelf({ title, books, emptyMessage, emptyAction, hasActiveSearch }: ShelfProps) {
     return (
         <section>
             <div className="mb-6 flex items-baseline gap-3">
@@ -21,7 +22,8 @@ export function Shelf({ title, books, emptyMessage, hasActiveSearch }: ShelfProp
             </div>
             <BookGrid 
                 books={books} 
-                emptyMessage={emptyMessage} 
+                emptyMessage={emptyMessage}
+                emptyAction={emptyAction} 
                 hasActiveSearch={hasActiveSearch}
             />
         </section>

@@ -4,9 +4,10 @@ interface EmptyStateProps {
     variant?: 'no-data' | 'no-results';
     title: string;
     description?: string;
+    action?: React.ReactNode;
 }
 
-export function EmptyState({ variant = 'no-data', title, description }: EmptyStateProps) {
+export function EmptyState({ variant = 'no-data', title, description, action }: EmptyStateProps) {
     const Icon = variant === 'no-results' ? SearchX : BookX;
 
     return (
@@ -18,6 +19,7 @@ export function EmptyState({ variant = 'no-data', title, description }: EmptySta
                     {description}
                 </p>
             )}
+            {action && <div className="mt-6">{action}</div>}
         </div>
     )
 }

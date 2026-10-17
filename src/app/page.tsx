@@ -33,7 +33,13 @@ function HomePageContent() {
       ) : isError ? (
         <p className="text-sm text-destructive">Failed to load books</p>
       ) : (
-        <Shelf title="All Books" books={books} hasActiveSearch={!!search} />
+        <Shelf 
+          title="All Books" 
+          books={books} 
+          hasActiveSearch={!!search}
+          emptyMessage="Start building your library by adding your first book."
+          emptyAction={<BookFormDialog mode="create" triggerLabel="Add your first book" />} 
+        />
       )}
     </div>
   );

@@ -34,9 +34,10 @@ import { ApiError } from '@/lib/api-client';
 interface BookFormDialogProps {
   mode: 'create' | 'edit';
   book?: Book; // wajib diisi kalau mode 'edit'
+  triggerLabel?: string;
 }
 
-export function BookFormDialog({ mode, book }: BookFormDialogProps) {
+export function BookFormDialog({ mode, book, triggerLabel = 'Add Book' }: BookFormDialogProps) {
   const [open, setOpen] = useState(false);
   const { mutate: createBook, isPending: isCreating } = useCreateBook();
   const { mutate: updateBook, isPending: isUpdating } = useUpdateBook();
@@ -126,7 +127,7 @@ export function BookFormDialog({ mode, book }: BookFormDialogProps) {
           mode === 'create' ? (
             <Button className="gap-2">
               <Plus className="h-4 w-4" />
-              Add Book
+              {triggerLabel}
             </Button>
           ) : (
             <Button variant="ghost" size="icon-sm" aria-label="Edit book">
